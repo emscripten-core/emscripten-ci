@@ -11,6 +11,7 @@ RUN EXTRA_CHROME_DEPS="lsb-release fonts-liberation libappindicator3-1" \
         cmake \
         openjdk-8-jre-headless `# openjdk-9 is also available, but hits #7232` \
         python-pip \
+        python-setuptools \
         python3-pip \
         python3 \
 # docs packages
@@ -29,3 +30,9 @@ RUN EXTRA_CHROME_DEPS="lsb-release fonts-liberation libappindicator3-1" \
         xserver-xorg-video-dummy \
         xvfb \
     && apt-get clean
+
+RUN python2 -m pip install --no-cache-dir --upgrade pip \
+    && python2 -m pip install --no-cache-dir flake8==3.7.8
+
+RUN python3 -m pip install --no-cache-dir --upgrade pip \
+    && python3 -m pip install --no-cache-dir flake8==3.7.8
