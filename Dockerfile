@@ -1,5 +1,7 @@
+## Base Image
 FROM buildpack-deps:bionic
 
+## Package Installation (apt-get)
 RUN EXTRA_CHROME_DEPS="lsb-release fonts-liberation libappindicator3-1" \
 # preseed packages so that apt-get won't prompt for user input
     && echo "keyboard-configuration keyboard-configuration/layoutcode string us" | debconf-set-selections \
@@ -12,8 +14,8 @@ RUN EXTRA_CHROME_DEPS="lsb-release fonts-liberation libappindicator3-1" \
         openjdk-8-jre-headless `# openjdk-9 is also available, but hits #7232` \
         python-pip \
         python-setuptools \
-        python3-pip \
         python3 \
+        python3-pip \
 # docs packages
         sphinx-common \
 # test packages
@@ -31,6 +33,7 @@ RUN EXTRA_CHROME_DEPS="lsb-release fonts-liberation libappindicator3-1" \
         xvfb \
     && apt-get clean
 
+## Package Installation (pip)
 RUN python2 -m pip install --no-cache-dir --upgrade pip \
     && python2 -m pip install --no-cache-dir flake8==3.7.8
 
