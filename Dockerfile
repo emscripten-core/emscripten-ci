@@ -1,5 +1,5 @@
 ## Base Image
-FROM buildpack-deps:bionic
+FROM buildpack-deps:focal
 
 ## Package Installation (apt-get)
 RUN EXTRA_CHROME_DEPS="lsb-release fonts-liberation libappindicator3-1" \
