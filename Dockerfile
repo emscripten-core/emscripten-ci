@@ -1,18 +1,17 @@
 ## Base Image
-FROM buildpack-deps:bionic
+FROM buildpack-deps:focal
 
 ## Package Installation (apt-get)
 RUN EXTRA_CHROME_DEPS="lsb-release fonts-liberation libappindicator3-1" \
 # preseed packages so that apt-get won't prompt for user input
     && echo "keyboard-configuration keyboard-configuration/layoutcode string us" | debconf-set-selections \
     && echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true" | debconf-set-selections \
-    && apt-get update \
-    && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    && apt-get update -q \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -q -y \
 # build packages
         build-essential \
         cmake \
         openjdk-8-jre-headless `# openjdk-9 is also available, but hits #7232` \
-        python-pip \
         python-setuptools \
         python3 \
         python3-pip \
@@ -31,7 +30,10 @@ RUN EXTRA_CHROME_DEPS="lsb-release fonts-liberation libappindicator3-1" \
         xserver-xorg \
         xserver-xorg-video-dummy \
         xvfb \
-    && apt-get clean
+    && apt-get clean 
+
+## Install pip2
+RUN curl -fsSL https://bootstrap.pypa.io/pip/2.7/get-pip.py | python2
 
 ## Package Installation (pip)
 RUN python2 -m pip install --no-cache-dir --upgrade pip \
