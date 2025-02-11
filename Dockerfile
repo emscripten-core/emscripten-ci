@@ -1,5 +1,5 @@
 ## Base Image
-FROM buildpack-deps:bionic
+FROM buildpack-deps:focal
 
 ## Package Installation (apt-get)
 RUN EXTRA_CHROME_DEPS="lsb-release fonts-liberation libappindicator3-1" \
@@ -12,7 +12,6 @@ RUN EXTRA_CHROME_DEPS="lsb-release fonts-liberation libappindicator3-1" \
         build-essential \
         cmake \
         openjdk-8-jre-headless `# openjdk-9 is also available, but hits #7232` \
-        python-pip \
         python-setuptools \
         python3 \
         python3-pip \
@@ -34,8 +33,5 @@ RUN EXTRA_CHROME_DEPS="lsb-release fonts-liberation libappindicator3-1" \
     && apt-get clean
 
 ## Package Installation (pip)
-RUN python2 -m pip install --no-cache-dir --upgrade pip \
-    && python2 -m pip install --no-cache-dir flake8==3.7.8
-
 RUN python3 -m pip install --no-cache-dir --upgrade pip \
     && python3 -m pip install --no-cache-dir flake8==3.7.8
