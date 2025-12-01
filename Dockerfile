@@ -1,5 +1,5 @@
 ## Base Image
-FROM buildpack-deps:focal
+FROM buildpack-deps:jammy
 
 ## Package Installation (apt-get)
 RUN EXTRA_CHROME_DEPS="lsb-release fonts-liberation libappindicator3-1" \
@@ -20,6 +20,7 @@ RUN EXTRA_CHROME_DEPS="lsb-release fonts-liberation libappindicator3-1" \
 # test packages
         $EXTRA_CHROME_DEPS \
         chromium-browser \
+        libasound2 \
         dbus-x11 \
         firefox \
         menu \
