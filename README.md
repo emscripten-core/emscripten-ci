@@ -19,17 +19,17 @@ See [FROM](https://docs.docker.com/engine/reference/builder/#from) (Docker Refer
 ### Package Installation (apt-get)
 Additional packages/tools required by the Emscripten CI build are installed via apt-get using the `RUN` instruction.
 
-It is good practice to execute `apt-get update && apt-get install * && apt-get clean cache` using a single `RUN` instruction, as each docker instruction is creating a new read-only layer. Running `apt-get clean` helps keeping the resulting image size low (which would not be the case if `apt-get install` was executed as a separate `RUN` instruction).
+It is good practice to execute `apt-get update && apt-get install * && apt-get
+clean cache` using a single `RUN` instruction, as each docker instruction is
+creating a new read-only layer. Running `apt-get clean` helps keeping the
+resulting image size low (which would not be the case if `apt-get install` was
+executed as a separate `RUN` instruction).
 
-It's recommended to sort the package names alphabetically. For better traceability we created separate package sections for build, docs and test packages.
+It's recommended to sort the package names alphabetically. For better
+traceability we created separate package sections for build, docs and test
+packages.
 
 See [best practices for writing Dockerfiles](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/).
-
-### Package Installation (pip)
-
-Pip packages required by the Emscripten CI build are installed in a similar manner as described in the previous section. For example, the `--no-cache-dir` parameter is used in order to keep the size of the final image low.
-
-### Building the image and pushing it to Docker Hub
 
 Use the following commands for updating the `emscripten-ci` pre-built Docker image:
 
@@ -37,16 +37,22 @@ Use the following commands for updating the `emscripten-ci` pre-built Docker ima
 
 1. Clone/pull the latest version of this repository
 
-1. Build docker image locally from the repository root (location of [Dockerfile](/Dockerfile)):
+2. Pick a name for the new release.  e.g. NAME=jammy.v2
 
-    `docker build . --tag emscripten/emscripten-ci`
+3. Build docker image locally from the repository root (location of [Dockerfile](/Dockerfile)):
 
-1. Login to your Docker Hub account (if not logged in already):
+    `docker build . --tag emscripten/emscripten-ci:$NAME`
+
+4. Login to your Docker Hub account (if not logged in already):
 
     `docker login`
 
-1. Push docker image to Docker Hub:
+5. Push docker image to Docker Hub:
 
-    `docker push emscripten/emscripten-ci`
+    `docker push emscripten/emscripten-ci:$NAME`
+
+6. Update the `latest` tag to point to your new image:
+
+    `docker tag emscripten/emscripten-ci:$NAME emscripten/emscripten-ci:latest && docker push emscripten/emscripten-ci:latest`
 
 See [Docker CLI reference](https://docs.docker.com/engine/reference/commandline/cli/) for further details.
