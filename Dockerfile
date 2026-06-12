@@ -2,7 +2,8 @@
 FROM buildpack-deps:jammy
 
 ## Package Installation (apt-get)
-RUN EXTRA_CHROME_DEPS="lsb-release fonts-liberation libappindicator3-1" \
+RUN EXTRA_CHROME_DEPS="lsb-release fonts-liberation libappindicator3-1 libu2f-udev libvulkan1 xdg-utils" \
+    EXTRA_FIREFOX_DEPS="pulseaudio" \
 # preseed packages so that apt-get won't prompt for user input
     && echo "keyboard-configuration keyboard-configuration/layoutcode string us" | debconf-set-selections \
     && echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true" | debconf-set-selections \
@@ -18,6 +19,7 @@ RUN EXTRA_CHROME_DEPS="lsb-release fonts-liberation libappindicator3-1" \
 # docs packages
         sphinx-common \
 # test packages
+        $EXTRA_FIREFOX_DEPS \
         $EXTRA_CHROME_DEPS \
         chromium-browser \
         libasound2 \
